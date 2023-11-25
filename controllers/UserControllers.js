@@ -12,6 +12,19 @@ const createUser = async (req, res) => {
   }
 };
 
+const getAllUsers = async (req, res)=> {
+  try {
+    const users = await Register.findAll();
+    res.status(200).json(users);
+    console.log("users fetched...")
+    
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal Server Error' });
+  }
+}
+
 module.exports = {
   createUser,
+  getAllUsers
 };
