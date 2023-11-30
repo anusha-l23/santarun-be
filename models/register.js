@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      Register.belongsTo(models.Event, { foreignKey: 'eventId' });
     }
   }
   Register.init({
@@ -25,7 +25,8 @@ module.exports = (sequelize, DataTypes) => {
     bloodGroup: DataTypes.STRING,
     contactName: DataTypes.STRING,
     contactNumber: DataTypes.STRING,
-    acceptedTerms: DataTypes.BOOLEAN
+    acceptedTerms: DataTypes.BOOLEAN,
+    eventId: DataTypes.INTEGER,
   }, {
     sequelize,
     modelName: 'Register',
