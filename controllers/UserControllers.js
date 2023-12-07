@@ -40,18 +40,13 @@ const {Op} = require("sequelize");
 
 const createUser = async (req, res) => {
   try {
-    const { eventName, ...userData } = req.body; 
-
-    const event = await Event.findOne({ where: { eventName } });
-console.log(eventName, "eventName")
+    
+    const event = await Event.findOne();
     if (!event) {
       return res.status(404).json({ error: 'Event not found' });
     }
 
-    const user = await Register.create({
-      ...userData, 
-      eventId: event.id,
-    });
+    const user = await Register.create(req.body);
 
     res.status(200).json(user);
     console.log("User registered");
