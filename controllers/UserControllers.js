@@ -1,42 +1,7 @@
 const { Register } = require('../models');
 const {Event} = require("../models") 
 const {Op} = require("sequelize");
-
-// const createUser = async (req, res) => {
-//   try {
-
-//     const event = await Event.findOne({where: {eventName}});
-
-//     if (!event) {
-//       return res.status(404).json({ error: 'Event not found' });
-//     }
-
-
-
-//     const user = await Register.create({
-//       firstName:req.body.firstName,
-//   lastName:req.body.lastName,
-//   email:req.body.email,
-//   mobileNumber:req.body.mobileNumber,
-//   gender:req.body.gender,
-//   dateOfBirth:req.body.dateOfBirth,
-//   tShirtSize:req.body.tShirtSize,
-//   nameOfTheBib:req.body.nameOfTheBib,
-//   bloodGroup:req.body.bloodGroup,
-//   contactName:req.body.contactName,
-//   contactNumber:req.body.contactNumber,
-//   acceptedTerms:req.body.acceptedTerms,
-//   eventId:event.id
-//     });
-   
-  
-//     res.status(200).json(user);
-//     console.log("user registered")
-//   } catch (error) {
-//     console.error(error);
-//     res.status(500).json({ error: 'Internal Server Error' });
-//   }
-// };
+const nodemailer = require("nodemailer");
 
 const createUser = async (req, res) => {
   try {
@@ -46,15 +11,44 @@ const createUser = async (req, res) => {
       return res.status(404).json({ error: 'Event not found' });
     }
 
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: 'anusha.lakkakula2022@gmail.com',
+        pass: 'iutvtpzrnkkcfoqd'
+    }
+});
+
+const sendMail = (recipientEmail, message) => {
+const mailOptions = {
+  from: 'santarun2023.rcck@gmail.com',
+  to: recipientEmail,
+  subject: "Registration successful",
+  text: message
+}
+
+transporter.sendMail(mailOptions, (error, info)=> {
+  if(error){
+    console.error("Error sending email: ", error)
+  }
+  else{
+    console.log("Email sent: ", info.response)
+  }
+})
+};
+
     const user = await Register.create(req.body);
 
     res.status(200).json(user);
     console.log("User registered");
+const successfulMessage = "Thank you for registering...";
+sendMail(user.email, successfulMessage);
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: 'Internal Server Error' });
   }
 };
+
 
 const getAllUsers = async (req, res)=> {
   try {
