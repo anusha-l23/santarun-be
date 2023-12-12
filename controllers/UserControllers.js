@@ -3,7 +3,7 @@ const { Event } = require("../models")
 const { Op } = require("sequelize");
 const nodemailer = require("nodemailer");
 const acountSid = "ACe79385ef5aff258d5b49a5b139c827c7";
-const authToken = "c8f035579e8f1a0b7a54ea3425fc0656";
+const authToken = "4318e98c16d5c3136313145a7e8a2c3b";
 const client = require("twilio")(acountSid, authToken);
 
 const createUser = async (req, res) => {
